@@ -7,7 +7,7 @@
 * [Description](#description)
 * [Running and building](#running-and-building)
 * [Testing](#testing)
-* [Know Bugs/Future Implementatios](#know-bugs/future-implementations)
+* [Know Bugs/Future Implementatios](#know-bugs-future-implementations)
 
 ## Assignment
 
