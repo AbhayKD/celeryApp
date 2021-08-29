@@ -1,0 +1,69 @@
+version: "3.7"
+services:
+    postgres:
+        image: postgres:10.5
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        logging:
+            options:
+                max-size: 10m
+                max-file: "3"
+        ports:
+            - "5438:5432"
+        volumes:
+            - ./.postgres:/var/lib/postgresql/data
+            # copy the sql scripts
+            - ./sql_scripts/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+            - ./sql_scripts/data_scripts/continent.sql:/docker-entrypoint-initdb.d/continent.sql
+            - ./sql_scripts/data_scripts/country.sql:/docker-entrypoint-initdb.d/country.sql
+            - ./sql_scripts/data_scripts/city.sql:/docker-entrypoint-initdb.d/city.sql
+        networks:
+            - vectorai
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: "rabbitmq"
+        ports:
+            - "5673:5672"
+            - "15673:15672"
+        volumes:
+            - ./rabbitmq/etc:/etc/rabbitmq/
+            - ./rabbitmq/data/:/var/lib/rabbitmq/
+            # - ./.rabbitmq/log/:/var/log/rabbitmq
+        networks:
+            - vectorai
+        healthcheck:
+            test: rabbitmq-diagnostics -q ping
+            interval: 10s
+            timeout: 30s
+            retries: 3
+        # environment:
+        #   - RABBITMQ_DEFAULT_USER=guest
+        #   - RABBITMQ_DEFAULT_PASS=guest
+    worker:
+        container_name: 'worker'
+        volumes: 
+            - ./worker:/app
+        depends_on: 
+            rabbitmq:
+                condition: service_healthy
+            postgres:
+                condition: service_started
+        build: ./worker
+        networks:
+            - vectorai
+    client:
+        container_name: 'client'
+        volumes: 
+            - ./client:/app
+        depends_on: 
+            - worker
+        build: ./client
+        ports:
+            - "5100:5000"
+        networks:
+            - vectorai
+networks:
+    vectorai:
+        driver: bridge

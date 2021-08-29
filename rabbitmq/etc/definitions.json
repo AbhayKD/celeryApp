@@ -1,0 +1,43 @@
+{
+    "rabbit_version": "3.8.3",
+    "rabbitmq_version": "3.8.3",
+    "users": [],
+    "vhosts": [],
+    "permissions": [],
+    "topic_permissions": [],
+    "parameters": [],
+    "global_parameters": [],
+    "policies": [],
+    "queues": [
+        {
+            "name": "database_event",
+            "vhost": "/",
+            "durable": true,
+            "auto_delete": false,
+            "arguments": {
+                "x-queue-type": "classic"
+            }
+        }
+    ],
+    "exchanges": [
+        {
+            "name": "events",
+            "vhost": "/",
+            "type": "topic",
+            "durable": true,
+            "auto_delete": false,
+            "internal": false,
+            "arguments": {}
+        }
+    ],
+    "bindings": [
+        {
+            "source": "events",
+            "vhost": "/",
+            "destination": "database_events",
+            "destination_type": "queue",
+            "routing_key": "db.*.worker",
+            "arguments": {}
+        }
+    ]
+}
