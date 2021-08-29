@@ -3,8 +3,11 @@
 ## Table of contents
 
 * [Assignment](#assignment)
+* [Technologies Used](#technologies-used)
+* [Description](#description)
 * [Running and building](#running-and-building)
 * [Testing](#testing)
+* [Know Bugs/Future Implementatios](#know-bugs/future-implementations)
 
 ## Assignment
 
@@ -71,7 +74,7 @@ The database ensures some of the conditions are satisfied before actually making
 **Continent**
 
 id | name | area | population 
---- | --- | --- | --- |---
+--- | --- | --- | --- 
 integer(pk) | varchar | integer | bigint
 
 **Country**
