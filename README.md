@@ -3,8 +3,11 @@
 ## Table of contents
 
 * [Assignment](#assignment)
+* [Technologies Used](#technologies-used)
+* [Description](#description)
 * [Running and building](#running-and-building)
 * [Testing](#testing)
+* [Know Bugs/Future Implementatios](#know-bugs/future-implementations)
 
 ## Assignment
 
@@ -42,10 +45,10 @@
 
 * Explain the choices you made in designing the code for the client and message broker related services.
 > The application contains 3 major components (+1 rabbitmq component). The idea here was to design in a manner to seperate the components on the basis of their responsibilites and the core functionality. The components are as follows:
-1. Sql scripts - These are all the scripts required to setup the postgresql environment along with the dummy data and the functions and triggers. This script executes at the time of the environment setup ensuring the database is ready.
-2. Rabbitmq - This section contains the rabbitmq config and the exchange, queues and their binding which again in used at the time of bringing up the environment ready for the other microservices to use.
-3. Worker - This is the core module of the application. It contains all the workers logic, along with the tasks which the worker can perform. This module also hold the database related factory which in a way is designed to be agnostic of the underlying database and can be switched quite easily with any other SQL database. The worker here is using celery the as the medium for processing tasks asyncronously and uses rabbitmq as the message broker.
-4. Client - This module contains both the tester script to test the database functionality along with barebone flask application which can be hosted in numbers across the environment as the everything is built using docker containers. The flask app connects to the rmq broker and accepts the http request for the database operations to send them to the worker to perform the different requested tasks.
+> 1. Sql scripts - These are all the scripts required to setup the postgresql environment along with the dummy data and the functions and triggers. This script executes at the time of the environment setup ensuring the database is ready.
+> 2. Rabbitmq - This section contains the rabbitmq config and the exchange, queues and their binding which again in used at the time of bringing up the environment ready for the other microservices to use.
+> 3. Worker - This is the core module of the application. It contains all the workers logic, along with the tasks which the worker can perform. This module also hold the database related factory which in a way is designed to be agnostic of the underlying database and can be switched quite easily with any other SQL database. The worker here is using celery the as the medium for processing tasks asyncronously and uses rabbitmq as the message broker.
+> 4. Client - This module contains both the tester script to test the database functionality along with barebone flask application which can be hosted in numbers across the environment as the everything is built using docker containers. The flask app connects to the rmq broker and accepts the http request for the database operations to send them to the worker to perform the different requested tasks.
 
 * How would you run this in production? Include details of the technical stack where relevant.
 > Running the application in production will be much simpler due to the containerized implementation of the architure and application. What can be done from here on is first going by the route of keeping this application serverless. 
@@ -71,7 +74,7 @@ The database ensures some of the conditions are satisfied before actually making
 **Continent**
 
 id | name | area | population 
---- | --- | --- | --- |---
+--- | --- | --- | --- 
 integer(pk) | varchar | integer | bigint
 
 **Country**
